@@ -4,3 +4,7 @@
 !run_tests.sh
 !templates/
 !app/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

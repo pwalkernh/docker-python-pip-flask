@@ -1,4 +1,22 @@
-FROM python:3.13.2-alpine3.21@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7593ce242b36ee48d6b352
+FROM python:3.13.2-slim
+
+# Install system dependencies for Chrome
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    unzip \
+    curl \
+    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables for Chrome
+ENV CHROME_BIN=/usr/bin/google-chrome
+ENV CHROME_PATH=/usr/bin/google-chrome
+
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --upgrade pip && \

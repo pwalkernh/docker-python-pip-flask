@@ -1,28 +1,4 @@
-FROM python:3.13.2-slim
-
-# Install system dependencies for Firefox
-RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    unzip \
-    curl \
-    xvfb \
-    firefox-esr \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install geckodriver
-RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz" \
-    && tar -xzf geckodriver-v0.33.0-linux64.tar.gz \
-    && mv geckodriver /usr/local/bin/ \
-    && chmod +x /usr/local/bin/geckodriver \
-    && rm geckodriver-v0.33.0-linux64.tar.gz \
-    && ls -la /usr/local/bin/geckodriver \
-    && /usr/local/bin/geckodriver --version
-
-# Set environment variables for Firefox
-ENV DISPLAY=:99
-
+FROM python:3.13.2-alpine3.21@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7593ce242b36ee48d6b352
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install --upgrade pip && \

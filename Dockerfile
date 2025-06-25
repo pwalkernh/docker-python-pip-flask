@@ -1,21 +1,27 @@
 FROM python:3.13.2-slim
 
-# Install system dependencies for Chrome
+# Install system dependencies for Firefox
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
     unzip \
     curl \
-    && wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
+    xvfb \
+    firefox-esr \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables for Chrome
-ENV CHROME_BIN=/usr/bin/google-chrome
-ENV CHROME_PATH=/usr/bin/google-chrome
+# Install geckodriver
+RUN wget -q "https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz" \
+    && tar -xzf geckodriver-v0.33.0-linux64.tar.gz \
+    && mv geckodriver /usr/local/bin/ \
+    && chmod +x /usr/local/bin/geckodriver \
+    && rm geckodriver-v0.33.0-linux64.tar.gz \
+    && ls -la /usr/local/bin/geckodriver \
+    && /usr/local/bin/geckodriver --version
+
+# Set environment variables for Firefox
+ENV DISPLAY=:99
 
 WORKDIR /app
 COPY requirements.txt .

@@ -2,7 +2,7 @@ FROM python:3.13.2-alpine3.21@sha256:323a717dc4a010fee21e3f1aac738ee10bb485de4e7
 WORKDIR /app
 
 # Install bash and other necessary packages
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash curl jq
 
 COPY requirements.txt .
 RUN pip install --upgrade pip && \

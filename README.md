@@ -11,7 +11,6 @@ A Flask-based REST API for sports betting calculations including payouts, stakes
 - [Running Tests](#running-tests)
 - [Running the Flask App](#running-the-flask-app)
 - [API Documentation](#api-documentation)
-- [Project Structure](#project-structure)
 
 ## Getting Started
 
@@ -22,32 +21,11 @@ This project requires:
 
 ## Checking Out the Code
 
-This project uses a git submodule for the main application code. The `app/` directory is a submodule pointing to the `betcalc` repository.
+This project uses a git submodule for the main application code. The `app/` directory is a submodule pointing to the `betcalc` repository (`https://github.com/pwalkernh/betcalc`)
 
-### Clone with submodules (recommended)
 ```bash
 git clone --recurse-submodules https://github.com/pwalkernh/docker-python-pip-flask.git
 cd docker-python-pip-flask
-```
-
-### Clone then initialize submodules
-```bash
-git clone https://github.com/pwalkernh/docker-python-pip-flask.git
-cd docker-python-pip-flask
-git submodule update --init --recursive
-```
-
-### Updating submodules
-```bash
-# Update to latest commit on tracked branch
-git submodule update --remote
-
-# Update to specific commit
-cd app
-git checkout <commit-hash>
-cd ..
-git add app
-git commit -m "Update submodule to specific version"
 ```
 
 ## Building with Docker
@@ -64,11 +42,6 @@ This creates a Docker image named `my_app` with all dependencies installed.
 ### Install Python dependencies
 ```bash
 pip install -r requirements.txt
-```
-
-### Initialize the database (for legacy todo app only)
-```bash
-python -c "from app import app, db; app.app_context().push(); db.create_all()"
 ```
 
 ## Running Tests
@@ -91,7 +64,6 @@ docker run -t my_app ./run_tests.sh TestBettingCalculator.test_decimal_to_americ
 ./run_tests.sh
 
 # Or run individual test files
-python unit_tests.py  # Legacy todo app tests
 cd app && python tests/unit_tests.py  # Betting calculator tests
 cd app && python tests/test_api.py    # API endpoint tests
 cd app && python tests/test_capper_tracker.py  # Expert picks tests
@@ -113,15 +85,9 @@ docker run -p 5000:5000 my_app
 
 ### Without Docker
 ```bash
-# For the betting calculator API (main app)
 cd app
 export FLASK_APP=app.py
 export FLASK_ENV=development  # for development mode
-flask run --host=0.0.0.0 --port=5000
-
-# For the legacy todo app (root directory)
-export FLASK_APP=app.py
-flask init_db  # Initialize database first
 flask run --host=0.0.0.0 --port=5000
 ```
 
@@ -151,25 +117,3 @@ curl -X POST http://localhost:5000/calculate/payout \
 # Or using GET
 curl "http://localhost:5000/calculate/payout?odds=%2B150&stake=100"
 ```
-
-## Project Structure
-
-```
-.
-├── README.md                 # This file
-├── Dockerfile               # Docker container configuration
-├── requirements.txt         # Python dependencies
-├── build_docker.sh         # Docker build script
-├── run_tests.sh            # Test runner script
-├── unit_tests.py           # Legacy test file
-├── .gitmodules             # Git submodule configuration
-└── app/                    # Submodule: betcalc repository
-    ├── app.py              # Main Flask application
-    ├── calculator.py       # Betting calculation logic
-    ├── capper_tracker.py   # Expert picks functionality
-    ├── tests/              # Test files
-    ├── static/             # Static files including OpenAPI spec
-    └── README.md           # App-specific documentation
-```
-
-The `app/` directory is a git submodule pointing to `https://github.com/pwalkernh/betcalc`.

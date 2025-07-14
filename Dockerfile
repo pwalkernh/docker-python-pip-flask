@@ -7,7 +7,7 @@ RUN apk add --no-cache bash curl jq
 COPY requirements.txt .
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
-COPY run_tests.sh unit_tests.py ./
+COPY run_tests.sh ./
 COPY app ./
 ENV FLASK_APP=app.py
 CMD ["flask", "run", "--host", "0.0.0.0", "--port", "5000"]

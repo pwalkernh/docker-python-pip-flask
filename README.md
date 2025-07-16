@@ -97,8 +97,8 @@ The API will be available at `http://localhost:5000`
 
 ### Swagger/OpenAPI Documentation
 Once the Flask app is running, view the interactive API documentation at:
-- **Swagger UI**: `http://localhost:5000/static/openapi/openapi.yml` (raw spec)
-- **API Info**: `http://localhost:5000/` (basic endpoint information)
+- **Swagger UI**: `http://localhost:5000/static/index.html`
+- **API Info**: `http://localhost:5000/`
 
 ### Available Endpoints
 - `POST/GET /calculate/payout` - Calculate payout from odds and stake
